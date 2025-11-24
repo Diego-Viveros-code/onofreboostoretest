@@ -4,9 +4,15 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.logo{
+  width: 100px;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
+  margin-top: 5px;
+  border-radius: 8px;
   align-items: center;
   background-color: #0e5e52; /* azul oscuro elegante */
   padding: 15px 40px;
@@ -41,7 +47,7 @@ body {
   background-color: rgba(133, 131, 131, 0.4); /* rojo vibrante */
   transform: scale(1.1);
   font-weight: bold; 
-  color: #0a0c4e;     /* efecto de zoom suave */
+  color: white;     /* efecto de zoom suave */
 }
 
 /* Responsivo para pantallas pequeñas */

@@ -28,9 +28,6 @@ export class NavRightComponent {
   }
 
     logout() {
-    // Si quieres limpiar datos de sesión o token, aquí va
-    // localStorage.removeItem('token');
-
     // Redirigir al login
     this.router.navigate(['/home']);
   }

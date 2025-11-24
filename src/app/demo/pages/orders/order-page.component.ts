@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdTableComplete } from "../table-complete/table-complete";
 
 interface Alert {
 	type: string;
@@ -45,7 +46,7 @@ interface Alert {
 
 @Component({
   selector: 'app-order-page',
-  imports: [SharedModule, NgbAlertModule],
+  imports: [SharedModule, NgbAlertModule, NgbdTableComplete] ,
   templateUrl: './order-page.component.html',
   styleUrls: ['./order-page.component.scss']
 })

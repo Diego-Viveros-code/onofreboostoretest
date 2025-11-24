@@ -1,35 +1,28 @@
-<div class="container"> 
-    
-<h2 class="titulo">Busqueda rápida</h2>
+<div class="container">
+  <h2 class="titulo">Busqueda rápida</h2>
 
-<div class="buscar">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Introduzca título o autor"
-    (input)="filtrar()"
-    [(ngModel)]="search"
-  />
-</div>
+  <div class="buscar">
+    <input type="text" class="form-control" placeholder="Introduzca título o autor" (input)="filtrar()" [(ngModel)]="search" />
+  </div>
 
-<hr>
-<div class="grid">
-  <div class="card" *ngFor="let libro of librosFiltrados">
-    <figure style="width: 200px;">
-    <img [src]="libro.portada" class="portada" />
-    </figure>
+  <div class="grid">
+    <div class="card" *ngFor="let libro of librosFiltrados">
+        <img [src]="libro.portada" class="portada" />
 
-    <div class="info">
-      <h3>{{ libro.titulo }}</h3>
-      <p>{{ libro.autor }}</p>
-      <p>{{ libro.categoria }}</p>
-    </div>
+      <div class="info">
+        <h3>{{ libro.titulo }}</h3>
+        <p>{{ libro.autor }}</p>
+        <p>{{ libro.categoria }}</p>
+      </div>
 
-    <span class="precio">
-        {{ libro.precio | number }} Gs.
-    </span>
-        <button class="btn btn-carrito" (click)="agregarAlCarrito(libro.id)">Agregar al carrito</button>
+      <span class="precio">{{ libro.precio | number }} Gs.</span>
+      <button class="btn btn-carrito" (click)="agregarAlCarrito(libro.id)">Agregar al carrito</button>
     </div>
   </div>
-  <hr>
+  <!-- PAGINADOR -->
+<div class="paginador">
+  <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">« Anterior</button>
+  <span>Página {{ paginaActual }} / {{ totalPaginas }}</span>
+  <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">Siguiente »</button>
+</div>
 </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BookListComponent } from "../book-list/book-list.component";
-import { NavGlobal } from "src/app/nav-global/nav-global";
+import { NavGlobal } from "src/app/demo/pages/nav-global/nav-global";
 
 @Component({
   selector: 'app-home',
