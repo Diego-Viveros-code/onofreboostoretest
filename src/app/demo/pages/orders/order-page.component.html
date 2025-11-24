@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-sm-12">
+    <!-- <app-card cardTitle="Productos">
+      <p>
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+        ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+        in culpa qui officia deserunt mollit anim id est laborum."
+      </p>
+
+      @for (alert of alerts; track alert) {
+	<ngb-alert [type]="alert.type" (closed)="close(alert)">{{ alert.message }}</ngb-alert>
+}
+<button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
+
+    </app-card> -->
+
+<div class="col-xl-12 col-md-6">
+  <app-card cardTitle="Productos" cardClass="Recent-Users table-card" blockClass="p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of tables; track product) {
+            <tr>
+              <td>
+                <img class="rounded-circle" style="width: 40px" src="{{ product.img }}" alt="{{ product.name }}" />
+              </td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.description }}</td>
+              <td>Gs {{ product.price }}</td>
+              <td>
+                <span class="{{ product.stock > 0 ? 'text-success' : 'text-danger' }}">
+                  {{ product.stock > 0 ? 'Disponible' : 'Agotado' }}
+                </span>
+              </td>
+              <td>
+                <button 
+                  class="btn btn-sm btn-primary"
+                  [disabled]="product.stock === 0"
+                  (click)="addToCart(product)">
+                  Agregar al carrito
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>
+
+  
+  </div>
+</div>
