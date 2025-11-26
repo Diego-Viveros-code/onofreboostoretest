@@ -1,49 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Books } from './books'; 
+import { inject, Injectable } from '@angular/core';
 import { Book } from './book';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
+  // se invoca a la url madre
+  private apiUrl = environment.apiUrl;
 
-  private books: Book[] = Books;
+  // se injecta el httpClient en variable http
+  private clienteHttp = inject(HttpClient);
 
   constructor() {}
 
-  // Obtener todos los libros
-  getBooks(): Book[] {
-    return this.books;
-  }
-
-  // Obtener libro por ID
-  getBookById(id: number): Book | undefined {
-    return this.books.find(book => book.id === id);
-  }
-
-  // Filtrar por categoría
-  getBooksByCategory(category: string): Book[] {
-    return this.books.filter(book => 
-      book.categoria.toLowerCase() === category.toLowerCase()
-    );
-  }
-
-  // Buscar por título
-  searchBooks(term: string): Book[] {
-    const lower = term.toLowerCase();
-    return this.books.filter(book =>
-      book.titulo.toLowerCase().includes(lower)
-    );
-  }
-
-  // Simular agregar al carrito
-  addToCart(bookId: number) {
-    const book = this.getBookById(bookId);
-    if (!book) return { success: false, message: 'Libro no encontrado' };
-
-    // Aquí luego conectarías con un CartService real
-    console.log(`✔ Libro agregado al carrito: ${book.titulo}`);
-
-    return { success: true, book };
+  // metodo asincrono de tipo array de libros
+  getBooks(): Observable<Book[]> {
+    return this.clienteHttp.get<Book[]>(this.apiUrl + 'query/method/join_books_category');
   }
 }

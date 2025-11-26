@@ -7,22 +7,23 @@
 
   <div class="grid">
     <div class="card" *ngFor="let libro of librosFiltrados">
-        <img [src]="libro.portada" class="portada" />
+      <img [src]="libro.cover" class="portada" />
 
       <div class="info">
-        <h3>{{ libro.titulo }}</h3>
-        <p>{{ libro.autor }}</p>
-        <p>{{ libro.categoria }}</p>
+        <h3>{{ libro.title }}</h3>
+        <p>{{ libro.author }}</p>
+        <p>{{ libro.category }}</p>
       </div>
 
-      <span class="precio">{{ libro.precio | number }} Gs.</span>
-      <button class="btn btn-carrito" (click)="agregarAlCarrito(libro.id)">Agregar al carrito</button>
+      <span class="precio">{{ libro.price | number }} Gs.</span>
+      <button class="btn btn-carrito" (click)="agregarAlCarrito(libro.book_id)">Agregar al carrito</button>
     </div>
   </div>
+
   <!-- PAGINADOR -->
-<div class="paginador">
-  <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">« Anterior</button>
-  <span>Página {{ paginaActual }} / {{ totalPaginas }}</span>
-  <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">Siguiente »</button>
-</div>
+  <div class="paginador">
+    <button (click)="paginaAnterior()" [disabled]="paginaActual === 1">« Anterior</button>
+    <span>Página {{ paginaActual }} / {{ totalPaginas }}</span>
+    <button (click)="paginaSiguiente()" [disabled]="paginaActual === totalPaginas">Siguiente »</button>
+  </div>
 </div>

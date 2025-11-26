@@ -1,6 +1,7 @@
 .container{
     margin: 1px; padding: 15px; border: 0.3px solid lightgray; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.08);
-}
+    background-color: #dfdfdf;
+  }
 
 .titulo {
   text-align: center;
@@ -41,6 +42,7 @@
 .card:hover {
   transform: scale(1.05); /* agranda un poquito la tarjeta */
   box-shadow: 0px 8px 20px rgba(0,0,0,0.2); /* sombra más marcada */
+  background-color: rgba(34, 63, 36,0.2);
 }
 
 .portada {
@@ -54,7 +56,8 @@
 }
 
 .card:hover .portada {
-  transform: scale(1.1); /* la imagen se agranda suavemente */
+  transform: scale(1.0); /* la imagen se agranda suavemente */
+  //background-color: #15f027;
 }
 
 .info h3 {

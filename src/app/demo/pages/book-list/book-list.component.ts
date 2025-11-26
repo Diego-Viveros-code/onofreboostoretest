@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { BookService } from './book.service';
 import { CommonModule } from '@angular/common';
 import { Book } from './book';
+//import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-book-list',
   imports: [FormsModule, CommonModule],
+  providers: [BookService],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'
 })
@@ -20,14 +22,49 @@ export class BookListComponent implements OnInit {
   itemsPorPagina = 6; // Puedes cambiarlo
   totalPaginas = 1;
 
-  // Inyección del service
+  //Inyección del service
   public bookService = inject(BookService);
 
   ngOnInit() {
-    this.libros = this.bookService.getBooks();
-    this.librosFiltrados = [...this.libros]; // Inicialmente mostrar todos
-    this.totalPaginas = Math.ceil(this.libros.length / this.itemsPorPagina);
-    this.aplicarPaginacion();
+    this.obtenerLibros();
+  }
+
+  obtenerLibros() {
+    this.bookService.getBooks().subscribe({
+      next: (datos) => {
+        this.libros = datos.map((libro) => ({
+          id: libro.id,
+          titulo: libro.title,
+          autor: libro.author,
+          categoria: libro.category,
+          precio: libro.price,
+          cover: `http://localhost:8000/libros/${libro.cover}`
+        }));
+
+        this.librosFiltrados = [...this.libros];
+        this.totalPaginas = Math.ceil(this.libros.length / this.itemsPorPagina);
+        this.aplicarPaginacion();
+      },
+      error: (error) => {
+        console.error('Error al obtener los libros', error);
+      }
+    });
+  }
+
+  // Obtener libro por ID
+  getBookById(id: number): Book | undefined {
+    return this.libros.find((book) => book.id === id);
+  }
+
+  // Filtrar por categoría
+  getBooksByCategory(category: string): Book[] {
+    return this.libros.filter((book) => book.categoria.toLowerCase() === category.toLowerCase());
+  }
+
+  // Buscar por título
+  searchBooks(term: string): Book[] {
+    const lower = term.toLowerCase();
+    return this.libros.filter((book) => book.titulo.toLowerCase().includes(lower));
   }
 
   // FILTRO
@@ -74,14 +111,6 @@ export class BookListComponent implements OnInit {
       );
     }
   }
-  //   filtrar() {
-  //   const texto = this.search.toLowerCase();
-  //   this.librosFiltrados = this.libros.filter(libro =>
-  //     libro.titulo.toLowerCase().includes(texto) ||
-  //     libro.autor.toLowerCase().includes(texto) ||
-  //     libro.categoria.toLowerCase().includes(texto)
-  //   );
-  // }
 
   public buscar() {
     console.log('buscar');

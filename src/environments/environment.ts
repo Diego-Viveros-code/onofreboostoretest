@@ -6,7 +6,9 @@ import packageInfo from '../../package.json';
 
 export const environment = {
   appVersion: packageInfo.version,
+  apiUrl: 'http://localhost:8000/api/', 
   production: true
+// <-- aquí agregas la URL de tu backend
 };
 /*
  * For easier debugging in development mode, you can import the following file

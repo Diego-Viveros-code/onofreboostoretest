@@ -16,6 +16,14 @@ const routes: Routes = [
     path: 'home',
     loadComponent: () => import('./demo/pages/home/home.component').then((c) => c.HomeComponent)
   },
+  // {
+  //   path: 'cart-page',
+  //   loadComponent: () => import('./demo/pages/cart-list/cart-list.component').then((c) => c.CartListComponent)
+  // },
+  {
+    path: 'cart',
+    loadComponent: () => import('./demo/pages/cart/cart.component').then((c) => c.CartComponent)
+  },
   {
     path: '',
     component: GuestComponent,
@@ -34,6 +42,7 @@ const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./demo/dashboard/dashboard.component').then((c) => c.DashboardComponent)
       },
+
       {
         path: 'home',
         loadComponent: () => import('./demo/pages/home/home.component').then((c) => c.HomeComponent)
@@ -44,12 +53,12 @@ const routes: Routes = [
       },
       {
         path: 'cart-page',
-        loadComponent: () => import('./demo/pages/cart/cart-page.component').then((c) => c.CartPageComponent)
+        loadComponent: () => import('./demo/pages/cart2/cart-page.component').then((c) => c.CartPageComponent)
       },
       {
         path: 'book-list',
         loadComponent: () => import('./demo/pages/book-list/book-list.component').then((c) => c.BookListComponent)
-      },
+      }
     ]
   }
 ];
