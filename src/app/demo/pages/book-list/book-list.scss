@@ -19,6 +19,15 @@
   max-width: 700px;
 }
 
+.pay-btn {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
+  border: none;
+  max-width: 700px;
+  background-color: #0e5e52;
+}
+
 .grid {
   display: grid;
   gap: 20px;
@@ -57,7 +66,6 @@
 
 .card:hover .portada {
   transform: scale(1.0); /* la imagen se agranda suavemente */
-  //background-color: #15f027;
 }
 
 .info h3 {

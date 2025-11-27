@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BookService } from './book.service';
+import { BookService } from '../services/book.service';
 import { CommonModule } from '@angular/common';
 import { Book } from './book';
-//import { Observable } from 'rxjs';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-book-list',
@@ -14,109 +14,155 @@ import { Book } from './book';
 })
 export class BookListComponent implements OnInit {
   search = '';
-  libros = [];
-  librosFiltrados: Book[] = [];
+  books = [];
+  pagar = [];
+  booksFiltered: Book[] = [];
+  cart: Book[] = [];
+  userId: number = 1;
 
-  // PAGINADOR
-  paginaActual = 1;
-  itemsPorPagina = 6; // Puedes cambiarlo
-  totalPaginas = 1;
+  // valoresd de paginacion
+  currentPage = 1;
+  itemsPerPage = 6;
+  totalPages = 1;
 
-  //Inyección del service
   public bookService = inject(BookService);
+  public cartService = inject(CartService);
 
   ngOnInit() {
-    this.obtenerLibros();
+    this.getBooks();
   }
 
-  obtenerLibros() {
+  getBooks() {
     this.bookService.getBooks().subscribe({
-      next: (datos) => {
-        this.libros = datos.map((libro) => ({
-          id: libro.id,
-          titulo: libro.title,
-          autor: libro.author,
-          categoria: libro.category,
-          precio: libro.price,
-          cover: `http://localhost:8000/libros/${libro.cover}`
+      next: (data) => {
+        this.books = data.map((book) => ({
+          book_id: book.book_id,
+          title: book.title,
+          author: book.author,
+          category: book.category,
+          price: book.price,
+          cover: `http://localhost:8000/libros/${book.cover}`
         }));
 
-        this.librosFiltrados = [...this.libros];
-        this.totalPaginas = Math.ceil(this.libros.length / this.itemsPorPagina);
-        this.aplicarPaginacion();
+        this.booksFiltered = [...this.books];
+        this.totalPages = Math.ceil(this.books.length / this.itemsPerPage);
+        this.applyPagination();
       },
       error: (error) => {
-        console.error('Error al obtener los libros', error);
+        console.error('Error fetching books', error);
       }
     });
   }
 
-  // Obtener libro por ID
+  pay() {
+    // Armamos el objeto que se enviará al backend
+    const orderItems = this.pagar.map((item) => ({
+      book_id: item.book_id,
+      title: item.title,
+      author: item.author,
+      category: item.category,
+      price: item.price,
+      quantity: 1
+    }));
+
+    // Si quieres enviar todo en un solo pedido:
+    const payload = {
+      user_id: this.userId,
+      items: orderItems,
+      total: this.pagar[0]['price']
+    };
+
+    console.log('enviado');
+    console.log(payload);
+    console.log('enviado');
+
+    //envio de datos para backend
+    //this.cartService.pay(payload);
+
+    this.cartService.pay(payload).subscribe({
+      next: (data) => {
+        console.log('Respuesta del backend:', data);
+
+        const payUrl = data['pay_url'];
+        console.log('URL de pago:', payUrl);
+
+        if (payUrl) {
+          // Abre en una nueva pestaña
+          window.open(payUrl, '_blank');
+        }
+
+        // this.openPayPopup(payUrl);
+      },
+      error: (err) => {
+        console.error('Error al pagar:', err);
+      }
+    });
+  }
+
+  addToCart(book: Book): void {
+    this.pagar.push(book);
+  }
+
+  removeItem(index: number): void {
+    this.pagar.splice(index, 1);
+  }
+
   getBookById(id: number): Book | undefined {
-    return this.libros.find((book) => book.id === id);
+    return this.books.find((book) => book.id === id);
   }
 
-  // Filtrar por categoría
   getBooksByCategory(category: string): Book[] {
-    return this.libros.filter((book) => book.categoria.toLowerCase() === category.toLowerCase());
+    return this.books.filter((book) => book.category.toLowerCase() === category.toLowerCase());
   }
 
-  // Buscar por título
   searchBooks(term: string): Book[] {
     const lower = term.toLowerCase();
-    return this.libros.filter((book) => book.titulo.toLowerCase().includes(lower));
+    return this.books.filter((book) => book.title.toLowerCase().includes(lower));
   }
 
-  // FILTRO
-  filtrar() {
-    const texto = this.search.toLowerCase();
+  filter() {
+    const text = this.search.toLowerCase();
+    const filtered = this.books.filter((l) => l.title.toLowerCase().includes(text) || l.author.toLowerCase().includes(text));
 
-    const filtrados = this.libros.filter((l) => l.titulo.toLowerCase().includes(texto) || l.autor.toLowerCase().includes(texto));
+    this.totalPages = Math.ceil(filtered.length / this.itemsPerPage);
+    this.currentPage = 1;
 
-    this.totalPaginas = Math.ceil(filtrados.length / this.itemsPorPagina);
-    this.paginaActual = 1; // Resetear
-    this.aplicarPaginacion(filtrados);
+    this.applyPagination(filtered);
   }
 
-  // APLICAR PAGINACIÓN
-  aplicarPaginacion(lista = this.libros) {
-    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
-    const fin = inicio + this.itemsPorPagina;
-    this.librosFiltrados = lista.slice(inicio, fin);
+  applyPagination(list = this.books) {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.booksFiltered = list.slice(start, end);
   }
 
-  // CAMBIAR DE PÁGINA
-  paginaAnterior() {
-    if (this.paginaActual > 1) {
-      this.paginaActual--;
-      this.aplicarPaginacion(
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.applyPagination(
         this.search
-          ? this.libros.filter(
-              (l) => l.titulo.toLowerCase().includes(this.search.toLowerCase()) || l.autor.toLowerCase().includes(this.search.toLowerCase())
+          ? this.books.filter(
+              (l) => l.title.toLowerCase().includes(this.search.toLowerCase()) || l.author.toLowerCase().includes(this.search.toLowerCase())
             )
-          : this.libros
+          : this.books
       );
     }
   }
 
-  paginaSiguiente() {
-    if (this.paginaActual < this.totalPaginas) {
-      this.paginaActual++;
-      this.aplicarPaginacion(
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.applyPagination(
         this.search
-          ? this.libros.filter(
-              (l) => l.titulo.toLowerCase().includes(this.search.toLowerCase()) || l.autor.toLowerCase().includes(this.search.toLowerCase())
+          ? this.books.filter(
+              (l) => l.title.toLowerCase().includes(this.search.toLowerCase()) || l.author.toLowerCase().includes(this.search.toLowerCase())
             )
-          : this.libros
+          : this.books
       );
     }
   }
 
-  public buscar() {
-    console.log('buscar');
-  }
-
-  agregarAlCarrito(id: number) {
-    console.log('Agregar al carrito: ', id);
+  public searchAction() {
+    console.log('search');
   }
 }
