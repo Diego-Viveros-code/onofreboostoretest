@@ -1,11 +1,45 @@
 <div class="container">
-  <div class="box">
-    <div class="row">
-      <div class="col-sm-12">
-        <span style="font-weight: bold;">Mis pedidos</span>
-        <hr>
-        <ngbd-table-complete></ngbd-table-complete>
-      </div>
-    </div>
+  <br />
+  <span style="font-weight: bold">Mis pedidos</span>
+  <hr />
+
+  <div *ngIf="orders && orders.length > 0; else noOrders">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Nro. orden</th>
+          <th>Usuario</th>
+          <th>Estado</th>
+          <th>Total</th>
+          <th>Nro. transacción</th>
+          <th>Verificar pago</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of orders; let i = index">
+          <td>{{ item.order_id }}</td>
+          <td>{{ item.user_id }}</td>
+          <td>
+            <span
+              [ngClass]="{
+                'badge-pending': item.status === 'pendiente',
+                'badge-paid': item.status === 'pagado'
+              }"
+            >
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.total | number }}</td>
+          <td>{{ item.transaction_id }}</td>
+          <td>
+            <button type="submit" class="btn btn-success btn-sm" style="background-color: green; border: none;"(click)="checkPayment(item.order_id)">Verificar Pago</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
+  <ng-template #noOrders>
+    <p>No tienes órdenes.</p>
+  </ng-template>
 </div>

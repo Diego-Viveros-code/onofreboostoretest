@@ -20,9 +20,9 @@ export class BookListComponent implements OnInit {
   cart: Book[] = [];
   userId: number = 1;
 
-  // valoresd de paginacion
+  // valores de paginacion
   currentPage = 1;
-  itemsPerPage = 6;
+  itemsPerPage = 14;
   totalPages = 1;
 
   public bookService = inject(BookService);
@@ -54,6 +54,10 @@ export class BookListComponent implements OnInit {
     });
   }
 
+  totalCarrito(): number {
+    return this.pagar.reduce((suma, item) => suma + (parseInt(item.price, 10) || 0), 0);
+  }
+
   pay() {
     // Armamos el objeto que se enviará al backend
     const orderItems = this.pagar.map((item) => ({
@@ -65,11 +69,16 @@ export class BookListComponent implements OnInit {
       quantity: 1
     }));
 
+    // Calculamos el total sumando (precio * cantidad) de cada item
+    const total = orderItems.reduce((suma, item) => {
+      return suma + item.price * item.quantity;
+    }, 0);
+
     // Si quieres enviar todo en un solo pedido:
     const payload = {
       user_id: this.userId,
       items: orderItems,
-      total: this.pagar[0]['price']
+      total: total
     };
 
     console.log('enviado');

@@ -1,116 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdTableComplete } from "../table-complete/table-complete";
-
-interface Alert {
-	type: string;
-	message: string;
-}
-
-// const ALERTS: Alert[] = [
-// 	{
-// 		type: 'success',
-// 		message: 'This is an success alert',
-// 	},
-// 	{
-// 		type: 'info',
-// 		message: 'This is an info alert',
-// 	},
-// 	{
-// 		type: 'warning',
-// 		message: 'This is a warning alert',
-// 	},
-// 	{
-// 		type: 'danger',
-// 		message: 'This is a danger alert',
-// 	},
-// 	{
-// 		type: 'primary',
-// 		message: 'This is a primary alert',
-// 	},
-// 	{
-// 		type: 'secondary',
-// 		message: 'This is a secondary alert',
-// 	},
-// 	{
-// 		type: 'light',
-// 		message: 'This is a light alert',
-// 	},
-// 	{
-// 		type: 'dark',
-// 		message: 'This is a dark alert',
-// 	},
-// ];
-
+import { OrderService } from '../services/order.service';
+import { Order } from './order';
 
 @Component({
   selector: 'app-order-page',
-  imports: [SharedModule, NgbAlertModule, NgbdTableComplete] ,
+  imports: [SharedModule, NgbAlertModule],
   templateUrl: './order-page.component.html',
   styleUrls: ['./order-page.component.scss']
 })
-export class SamplePageComponent {
+export class OrderComponent implements OnInit {
+  public orderService = inject(OrderService);
+  orders: Order[] = [];
 
-  alerts: Alert[];
+  ngOnInit() {
+    this.getOrders();
+  }
 
-	constructor() {
-		//this.reset();
-	}
+  getOrders() {
+    this.orderService.getOrders().subscribe({
+      next: (data) => {
+        // data.orders es el array real
+        this.orders = data['orders'].map((order) => ({
+          order_id: order.order_id, // o order.order_id si así lo definiste en el backend
+          user_id: order.user_id,
+          total: order.total,
+          status: order.status,
+          transaction_id: order.transaction_id
+        }));
+      },
+      error: (error) => {
+        console.error('Error fetching orders', error);
+      }
+    });
+  }
 
-	// close(alert: Alert) {
-	// 	this.alerts.splice(this.alerts.indexOf(alert), 1);
-	// }
-
-	// reset() {
-	// 	this.alerts = Array.from(ALERTS);
-	// }
-  
-  tables = [
-    {
-      src: '../../../assets/images/user/avatar-1.jpg',
-      name: 'Isabella Christensen',
-      description: 'Requested account activation',
-      price: '25.000',
-      stock: '25.000',
-      time: '11 MAY 12:56',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-2.jpg',
-      name: 'Ida Jorgensen',
-      description: 'Pending document verification',
-      price: '25.000',
-      stock: '25.000',
-      time: '11 MAY 10:35',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-3.jpg',
-      name: 'Mathilda Andersen',
-      description: 'Completed profile setup',
-      price: '25.000',
-      stock: '25.000',
-      time: '9 MAY 17:38',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-1.jpg',
-      name: 'Karla Soreness',
-      description: 'Requires additional information',
-      price: '25.000',
-      stock: '25.000',
-      time: '19 MAY 12:56',
-      color: 'text-c-green'
-    },
-    {
-      src: 'assets/images/user/avatar-2.jpg',
-      name: 'Albert Andersen',
-      description: 'Approved and verified account',
-      price: '25.000',
-      stock: '25.000',
-      time: '21 July 12:56',
-      color: 'text-c-green'
-    }
-  ];
+  // ✔ Función que llama al service checkPayment
+  checkPayment(orderId: number) {
+    this.orderService.checkPayment(orderId).subscribe({
+      next: (res) => {
+        console.log('Pago verificado:', res);
+        // Actualizamos la lista de órdenes para reflejar el nuevo estado
+        this.getOrders();
+      },
+      error: (err) => {
+        console.error('Error verificando el pago', err);
+      }
+    });
+  }
 }

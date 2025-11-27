@@ -1,5 +1,5 @@
 <div class="container">
-  <h2 class="titulo">Busqueda rápida</h2>
+  <!-- <h2 class="titulo">Busqueda rápida</h2> -->
 
   <div class="buscar">
     <input type="text" class="form-control" placeholder="Busqueda por título o autor" (input)="filter()" [(ngModel)]="search" />
@@ -12,12 +12,11 @@
       <div class="info">
         <h3>{{ book.title }}</h3>
         <p>{{ book.author }}</p>
-        <p>{{ book.category }}</p>
       </div>
 
       <span class="precio">{{ book.price | number }} Gs.</span>
 
-      <button class="btn btn-carrito" type="submit" (click)="addToCart(book)">Agregar al carrito</button>
+      <button class="btn btn-carrito btn-sm" type="submit" (click)="addToCart(book)">Agregar al carrito</button>
     </div>
   </div>
 
@@ -31,62 +30,43 @@
   </div>
 
   <div *ngIf="pagar.length > 0">
-  <h2 class="titulo">Carrito</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Título</th>
-        <th>Autor</th>
-        <th>Categoría</th>
-        <th>Precio</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of pagar | keyvalue; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ item.value.title }}</td>
-        <td>{{ item.value.author }}</td>
-        <td>{{ item.value.category }}</td>
-        <td>{{ item.value.price | number }} Gs.</td>
-        <td>
-          <button class="btn btn-danger btn-sm" (click)="removeItem(item.key)">Quitar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <button [disabled]="pagar.length === 0" class="btn btn-success btn-sm pay-btn" (click)="pay()">Pagar&nbsp;con &nbsp;<span style="color:#ee2d2d;">Adams</span>Pay</button>
-  <hr />
-  </div>
-
-  <!-- MODAL -->
-  <!-- <div
-    class="modal fade"
-    id="paymentModal"
-    tabindex="-1"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title">Pagar con AdamsPay</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-          <iframe
-            *ngIf="payUrl"
-            [src]="payUrl | safeUrl"
-            width="100%"
-            height="600px"
-            style="border: none;"
-          ></iframe>
-        </div>
-
-      </div>
+    <h2 class="titulo">Carrito</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pagar | keyvalue; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.value.title }}</td>
+          <td>{{ item.value.author }}</td>
+          <td>{{ item.value.category }}</td>
+          <td>{{ item.value.price | number }} Gs.</td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="removeItem(item.key)">Quitar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Aquí mostramos el total en grande -->
+    <div class="total-carrito text-end mb-3">
+      <h4>
+        <strong>Total a pagar: {{ totalCarrito() | number }} Gs.</strong>
+      </h4>
     </div>
-  </div> -->
 
+    <button [disabled]="pagar.length === 0" class="btn btn-success btn-sm pay-btn" (click)="pay()">
+      Pagar&nbsp;con &nbsp;
+      <span style="color: #ee2d2d">Adams</span>
+      Pay
+    </button>
+    <hr />
+  </div>
 </div>
