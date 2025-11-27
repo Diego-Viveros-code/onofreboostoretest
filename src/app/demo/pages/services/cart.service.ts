@@ -17,14 +17,17 @@ export class CartService {
 
   constructor() {}
 
+  // obtiene todos los libros del carrito
   getCart(): Book[] {
     return this.cart;
   }
 
+  // remueve liros del carrito
   removeFromCart(index: number): void {
     this.cart.splice(index, 1);
   }
 
+  // metodo para crear una orden de pago
   pay(payload: unknown) {
     return this.clienteHttp.post(this.apiUrl + 'order/create-order', payload);
   }

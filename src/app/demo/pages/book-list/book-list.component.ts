@@ -4,15 +4,17 @@ import { BookService } from '../services/book.service';
 import { CommonModule } from '@angular/common';
 import { Book } from './book';
 import { CartService } from '../services/cart.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   providers: [BookService],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'
 })
 export class BookListComponent implements OnInit {
+  // valores iniciales
   search = '';
   books = [];
   pagar = [];
@@ -27,6 +29,7 @@ export class BookListComponent implements OnInit {
 
   public bookService = inject(BookService);
   public cartService = inject(CartService);
+  public router = inject(RouterModule);
 
   ngOnInit() {
     this.getBooks();
@@ -100,7 +103,7 @@ export class BookListComponent implements OnInit {
           window.open(payUrl, '_blank');
         }
 
-        // this.openPayPopup(payUrl);
+        window.location.href = '/order-page';
       },
       error: (err) => {
         console.error('Error al pagar:', err);

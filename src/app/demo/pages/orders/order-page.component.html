@@ -32,7 +32,8 @@
           <td>{{ item.total | number }}</td>
           <td>{{ item.transaction_id }}</td>
           <td>
-            <button type="submit" class="btn btn-success btn-sm" style="background-color: green; border: none;"(click)="checkPayment(item.order_id)">Verificar Pago</button>
+            <button type="button" *ngIf="item.status !== 'pagado'" class="btn btn-success btn-sm" style="background-color: green; border: none;" (click)="checkPayment(item.order_id)">Verificar Pago</button>
+            <p *ngIf="item.status === 'pagado'">finalizado</p>
           </td>
         </tr>
       </tbody>

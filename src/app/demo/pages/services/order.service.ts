@@ -19,10 +19,12 @@ export class OrderService {
 
   constructor() {}
 
+  // obtiene todas las ordenes del usuario
   getOrders(): Observable<Order[]> {
     return this.clienteHttp.get<Order[]>(this.apiUrl + 'order/user/' + this.userId);
   }
 
+  // verifica el estado de pago de una orden 
   checkPayment(orderId: number) {
     return this.clienteHttp.get(`${this.apiUrl}order/${orderId}/check-status`);
   }
