@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Book } from './book';
 import { CartService } from '../services/cart.service';
 import { RouterModule } from '@angular/router';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-book-list',
