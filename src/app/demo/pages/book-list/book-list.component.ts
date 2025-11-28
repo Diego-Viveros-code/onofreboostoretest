@@ -45,7 +45,7 @@ export class BookListComponent implements OnInit {
           author: book.author,
           category: book.category,
           price: book.price,
-          cover: environment.apiUrl+'/'+book.cover
+          cover: environment.apiImages+'/'+book.cover
         }));
 
         this.booksFiltered = [...this.books];

@@ -6,8 +6,9 @@ import packageInfo from '../../package.json';
 
 export const environment = {
   appVersion: packageInfo.version,
-  apiUrl: 'http://localhost:8000/api', 
-  production: false
+  apiUrl: 'https://onofreboostorebackend-production.up.railway.app/api/',
+  apiImages: 'https://onofreboostorebackend-production.up.railway.app/libros',
+  production: true
 // <-- aquí agregas la URL de tu backend
 };
 /*
