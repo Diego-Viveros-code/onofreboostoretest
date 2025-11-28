@@ -23,7 +23,7 @@ export class OrderComponent implements OnInit {
       next: (data) => {
         // data.orders es el array real
         this.orders = data['orders'].map((order) => ({
-          order_id: order.order_id, // o order.order_id si así lo definiste en el backend
+          order_id: order.order_id,
           user_id: order.user_id,
           total: order.total,
           status: order.status,
