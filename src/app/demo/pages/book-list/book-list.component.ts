@@ -85,11 +85,11 @@ export class BookListComponent implements OnInit {
     };
 
     console.log('enviado');
-    console.log(payload);
+    console.log(JSON.stringify(payload));
     console.log('enviado');
 
     //envio de datos para backend
-    //this.cartService.pay(payload);
+    this.cartService.pay(payload);
 
     this.cartService.pay(payload).subscribe({
       next: (data) => {
