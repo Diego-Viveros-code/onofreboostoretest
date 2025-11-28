@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Book } from './book';
 import { CartService } from '../services/cart.service';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-book-list',
@@ -44,7 +45,7 @@ export class BookListComponent implements OnInit {
           author: book.author,
           category: book.category,
           price: book.price,
-          cover: `http://localhost:8000/libros/${book.cover}`
+          cover: environment.apiUrl+'/'+book.cover
         }));
 
         this.booksFiltered = [...this.books];
