@@ -104,7 +104,7 @@ export class BookListComponent implements OnInit {
           window.open(payUrl, '_blank');
         }
 
-        //window.location.href = '/order-page';
+        window.location.href = '/order-page';
       },
       error: (err) => {
         console.error('Error al pagar:', err);
