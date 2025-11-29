@@ -25,7 +25,7 @@ export class BookListComponent implements OnInit {
 
   // valores de paginacion
   currentPage = 1;
-  itemsPerPage = 14;
+  itemsPerPage = 6;
   totalPages = 1;
 
   public bookService = inject(BookService);
