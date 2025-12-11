@@ -54,15 +54,6 @@ export class BookListComponent implements OnInit {
   public router = inject(RouterModule);
   private clienteHttp = inject(HttpClient);
 
-  openPopup(url: string) {
-    this.iframeUrl = url;
-    this.showPopup = true;
-  }
-
-  closePopup() {
-    this.showPopup = false;
-  }
-
   ngOnInit() {
     this.getBooks();
   }
@@ -116,15 +107,12 @@ export class BookListComponent implements OnInit {
       total: total
     };
 
-    console.log('enviado');
-    console.log(JSON.stringify(payload));
-    console.log('enviado');
+    // console.log('payload enviado');
+    // console.log(JSON.stringify(payload));
 
     this.cartService.pay(payload).subscribe({
       next: (data) => {
-        console.log('Respuesta del backend:', data);
-
-        // descomentar lo comentado para que funcione el pooling
+        //console.log('Respuesta del backend:', data);
 
         const payUrl = data['pay_url'];
         const orderId = data['order_id'];
@@ -146,15 +134,18 @@ export class BookListComponent implements OnInit {
 
   private pollPaymentStatus(orderId: number) {
     const interval = setInterval(() => {
-      console.log("Consulto cada 3 segundos");
       this.clienteHttp.get<{ pagado: boolean }>(environment.apiUrl + 'order/'+orderId+'/check-status').subscribe({
         next: (data) => {
-          console.log("ESTADO ACTUAL");
+          console.log("Pooling status - 3 Secs");
           console.log(data);
           if (data.pagado) {
+
             // Cierra la ventana de pago
             this.paymentWindow?.close();
+
+            // comienza el intervalo para corroborar cambio de estado
             clearInterval(interval);
+
             // Redirige a pantalla de éxito
             window.location.href = '/success';
           } 

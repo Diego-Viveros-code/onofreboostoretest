@@ -170,3 +170,59 @@
   max-width: 700px;
   background-color: #0e5e52;
 }
+
+/* Estilo general de la tabla del carrito */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #ddd !important;
+}
+
+/* Encabezado */
+.table thead th {
+  background-color: #f5f7fa;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px !important; /* padding reducido */
+  border-bottom: 2px solid #e1e1e1;
+}
+
+/* Celdas */
+.table tbody td {
+  padding: 8px 10px !important;  /* padding reducido */
+  vertical-align: middle;
+  font-size: 0.92rem;
+  color: #444;
+}
+
+/* Filas */
+.table tbody tr {
+  transition: background 0.15s ease;
+}
+
+/* Hover suave */
+.table tbody tr:hover {
+  background: #f9fafc;
+}
+
+/* Botón Quitar */
+.table .btn-danger.btn-sm {
+  padding: 4px 9px !important;
+  font-size: 0.78rem;
+  border-radius: 6px;
+}
+
+/* Total debajo del carrito */
+.total-carrito h4 {
+  font-size: 1.2rem;
+  margin-top: 14px;
+  color: #222;
+}
+
+/* Botón de pagar */
+.pay-btn {
+  padding: 8px 18px !important;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
