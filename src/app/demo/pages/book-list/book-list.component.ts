@@ -9,6 +9,17 @@ import { environment } from '../../../../environments/environment';
 //import { PaymentPopupComponent } from 'src/app/demo/pages/payment-popup/payment-popup.component';
 import { SafeUrlPipe } from "../payment-popup/safe-url.pipe";
 
+// import { Pipe, PipeTransform } from '@angular/core';
+// import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
+// @Pipe({ name: 'safeUrl' })
+// export class SafeUrlPipe implements PipeTransform {
+//   constructor(private sanitizer: DomSanitizer) {}
+//   transform(url: string): SafeResourceUrl {
+//     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+//   }
+// }
+
 @Component({
   selector: 'app-book-list',
   standalone: true,
@@ -106,7 +117,7 @@ export class BookListComponent implements OnInit {
     console.log('enviado');
 
     //envio de datos para backend
-    this.cartService.pay(payload);
+    //this.cartService.pay(payload);
 
     this.cartService.pay(payload).subscribe({
       next: (data) => {

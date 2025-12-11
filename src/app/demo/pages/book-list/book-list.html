@@ -29,11 +29,6 @@
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente »</button>
   </div>
 
-  <!-- <button (click)="showPopup = true">Mostrar popup</button>
-  <app-payment-popup [visible]="showPopup" [url]="iframeUrl" (closed)="onPopupClosed()"></app-payment-popup> -->
-  <!-- <app-payment-popup [visible]="showPopup" (closed)="onPopupClosed()"></app-payment-popup> -->
-  <!-- <button (click)="showPopupFn()">Mostrar popup</button> -->
-
   <!-- <button (click)="openPopup('https://www.abc.com.py/')">Abrir popup</button> -->
 
   <div id="popup" [style.display]="showPopup ? 'flex' : 'none'" class="popup-overlay">
