@@ -20,14 +20,18 @@ const routes: Routes = [
     path: 'order-page',
     loadComponent: () => import('./demo/pages/orders/order-page.component').then((c) => c.OrderComponent)
   },
-    {
+  {
     path: 'success',
     loadComponent: () => import('./demo/pages/success/success-page.component').then((c) => c.SuccessComponent)
   },
   {
+    path: '404',
+    loadComponent: () => import('./demo/pages/404/404-page.component').then((c) => c.FailedComponent)
+  },
+  {
     path: 'cart',
     loadComponent: () => import('./demo/pages/cart/cart.component').then((c) => c.CartComponent)
-  },
+  }
   // {
   //   path: '',
   //   component: AdminComponent,

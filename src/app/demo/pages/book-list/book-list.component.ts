@@ -127,7 +127,7 @@ export class BookListComponent implements OnInit {
         // descomentar lo comentado para que funcione el pooling
 
         const payUrl = data['pay_url'];
-        //const orderId = data['order_id'];
+        const orderId = data['order_id'];
         console.log('URL de pago:', payUrl);
 
         if (payUrl) {
@@ -136,7 +136,7 @@ export class BookListComponent implements OnInit {
         }
 
         // Comenzar a "polling" del estado
-        //this.pollPaymentStatus(orderId);
+        this.pollPaymentStatus(orderId);
       },
       error: (err) => {
         console.error('Error al pagar:', err);
@@ -155,9 +155,10 @@ export class BookListComponent implements OnInit {
             // Cierra la ventana de pago
             this.paymentWindow?.close();
             clearInterval(interval);
-
             // Redirige a pantalla de éxito
             window.location.href = '/order-page';
+          } else {
+             window.location.href = '/404';
           }
         },
         error: (err) => {
