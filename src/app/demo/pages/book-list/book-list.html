@@ -62,11 +62,14 @@
       </h4>
     </div>
 
+    <payment-popup [visible]="showPopup" [url]="iframeUrl" (closed)="onPopupClosed()"></payment-popup>
+
     <button [disabled]="pagar.length === 0" class="btn btn-success btn-sm pay-btn" (click)="pay()">
       Pagar&nbsp;con &nbsp;
       <span style="color: #ee2d2d">Adams</span>
       Pay
     </button>
+  
     <hr />
   </div>
 </div>
