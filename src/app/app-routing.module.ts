@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'order-page',
     loadComponent: () => import('./demo/pages/orders/order-page.component').then((c) => c.OrderComponent)
   },
+    {
+    path: 'success',
+    loadComponent: () => import('./demo/pages/success/success-page.component').then((c) => c.SuccessComponent)
+  },
   {
     path: 'cart',
     loadComponent: () => import('./demo/pages/cart/cart.component').then((c) => c.CartComponent)
