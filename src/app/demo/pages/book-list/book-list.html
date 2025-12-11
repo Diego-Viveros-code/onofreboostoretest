@@ -29,6 +29,20 @@
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente »</button>
   </div>
 
+  <!-- <button (click)="showPopup = true">Mostrar popup</button>
+  <app-payment-popup [visible]="showPopup" [url]="iframeUrl" (closed)="onPopupClosed()"></app-payment-popup> -->
+  <!-- <app-payment-popup [visible]="showPopup" (closed)="onPopupClosed()"></app-payment-popup> -->
+  <!-- <button (click)="showPopupFn()">Mostrar popup</button> -->
+
+  <!-- <button (click)="openPopup('https://www.abc.com.py/')">Abrir popup</button> -->
+
+  <div id="popup" [style.display]="showPopup ? 'flex' : 'none'" class="popup-overlay">
+    <div class="popup-content">
+      <button class="close-btn" (click)="closePopup()">✖</button>
+      <iframe [src]="iframeUrl | safeUrl" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+  </div>
+
   <div *ngIf="pagar.length > 0">
     <h2 class="titulo">Carrito</h2>
     <table class="table table-bordered">
@@ -62,14 +76,12 @@
       </h4>
     </div>
 
-    <payment-popup [visible]="showPopup" [url]="iframeUrl" (closed)="onPopupClosed()"></payment-popup>
-
     <button [disabled]="pagar.length === 0" class="btn btn-success btn-sm pay-btn" (click)="pay()">
       Pagar&nbsp;con &nbsp;
       <span style="color: #ee2d2d">Adams</span>
       Pay
     </button>
-  
+
     <hr />
   </div>
 </div>

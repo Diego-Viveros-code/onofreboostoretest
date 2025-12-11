@@ -3,7 +3,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-payment-popup',
   templateUrl: './payment-popup.component.html',
-  styleUrls: ['./payment-popup.component.scss']
+  styleUrls: ['./payment-popup.component.scss'],
+  standalone: true
 })
 export class PaymentPopupComponent {
   @Input() visible = false;

@@ -6,10 +6,13 @@ import { Book } from './book';
 import { CartService } from '../services/cart.service';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+//import { PaymentPopupComponent } from 'src/app/demo/pages/payment-popup/payment-popup.component';
+import { SafeUrlPipe } from "../payment-popup/safe-url.pipe";
 
 @Component({
   selector: 'app-book-list',
-  imports: [FormsModule, CommonModule, RouterModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule, RouterModule, SafeUrlPipe],
   providers: [BookService],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'
@@ -36,8 +39,16 @@ export class BookListComponent implements OnInit {
   public cartService = inject(CartService);
   public router = inject(RouterModule);
 
-  ngOnInit() {
+  openPopup(url: string) {
+    this.iframeUrl = url;
+    this.showPopup = true;
+  }
+
+  closePopup() {
     this.showPopup = false;
+  }
+
+  ngOnInit() {
     this.getBooks();
   }
 
@@ -105,8 +116,9 @@ export class BookListComponent implements OnInit {
         console.log('URL de pago:', payUrl);
 
         if (payUrl) {
-          this.iframeUrl = payUrl; // cargamos AdamsPay en iframe
-          this.showPopup = true; // mostramos el popup
+          //this.iframeUrl = ;
+          this.openPopup(payUrl); // cargamos AdamsPay en iframe
+          //this.showPopup = true; // mostramos el popup
         }
 
         // if (payUrl) {
@@ -120,10 +132,6 @@ export class BookListComponent implements OnInit {
         console.error('Error al pagar:', err);
       }
     });
-  }
-
-  onPopupClosed() {
-    this.showPopup = false;
   }
 
   addToCart(book: Book): void {
