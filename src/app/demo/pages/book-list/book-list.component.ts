@@ -134,31 +134,59 @@ export class BookListComponent implements OnInit {
 
   private pollPaymentStatus(orderId: number) {
     const interval = setInterval(() => {
-      this.clienteHttp.get<{ pagado: boolean }>(environment.apiUrl + 'order/'+orderId+'/check-status').subscribe({
-        next: (data) => {
-          console.log("Pooling status - 3 Secs");
-          console.log(data);
-          if (data.pagado) {
+      this.clienteHttp
+        .get<{ pagado: boolean; estado_actual: string }>(environment.apiUrl + 'order/' + orderId + '/check-status')
+        .subscribe({
+          next: (data) => {
+            console.log('Pooling status - 3 Secs', data);
 
-            // Cierra la ventana de pago
-            this.paymentWindow?.close();
+            const estado = data.estado_actual;
 
-            // comienza el intervalo para corroborar cambio de estado
-            clearInterval(interval);
+            if (estado === 'pagado') {
+              this.paymentWindow?.close();
+              clearInterval(interval);
+              window.location.href = '/success';
+              return;
+            }
 
-            // Redirige a pantalla de éxito
-            window.location.href = '/success';
-          } else {
-            // Redirige a pedido cancelado
-            window.location.href = '/404';
+            if (estado === 'cancelado' || estado === 'vencido' || estado === 'reembolsado' || estado === 'pendiente') {
+              this.paymentWindow?.close();
+              clearInterval(interval);
+              window.location.href = '/404';
+              return;
+            }
+          },
+          error: (err) => {
+            console.error('Error consultando el estado del pago', err);
           }
-        },
-        error: (err) => {
-          console.error('Error consultando el estado del pago', err);
-        }
-      });
-    }, 3000); // cada 3 segundos
+        });
+    }, 3000);
   }
+
+  // private pollPaymentStatus(orderId: number) {
+  //   const interval = setInterval(() => {
+  //     this.clienteHttp.get<{ pagado: boolean }>(environment.apiUrl + 'order/'+orderId+'/check-status').subscribe({
+  //       next: (data) => {
+  //         console.log("Pooling status - 3 Secs");
+  //         console.log(data);
+  //         if (data.pagado) {
+
+  //           // Cierra la ventana de pago
+  //           this.paymentWindow?.close();
+
+  //           // comienza el intervalo para corroborar cambio de estado
+  //           clearInterval(interval);
+
+  //           // Redirige a pantalla de éxito
+  //           window.location.href = '/success';
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.error('Error consultando el estado del pago', err);
+  //       }
+  //     });
+  //   }, 3000); // cada 3 segundos
+  // }
 
   addToCart(book: Book): void {
     this.pagar.push(book);
