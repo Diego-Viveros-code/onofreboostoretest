@@ -31,12 +31,12 @@
 
   <!-- <button (click)="openPopup('https://www.abc.com.py/')">Abrir popup</button> -->
 
-  <div id="popup" [style.display]="showPopup ? 'flex' : 'none'" class="popup-overlay">
+  <!-- <div id="popup" [style.display]="showPopup ? 'flex' : 'none'" class="popup-overlay">
     <div class="popup-content">
       <button class="close-btn" (click)="closePopup()">✖</button>
       <iframe [src]="iframeUrl | safeUrl" width="100%" height="100%" frameborder="0"></iframe>
     </div>
-  </div>
+  </div> -->
 
   <div *ngIf="pagar.length > 0">
     <h2 class="titulo">Carrito</h2>

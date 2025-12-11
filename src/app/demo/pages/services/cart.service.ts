@@ -32,4 +32,7 @@ export class CartService {
     return this.clienteHttp.post(this.apiUrl + 'order/create-order', payload);
   }
 
+  checkStatus(){
+    
+  }
 }

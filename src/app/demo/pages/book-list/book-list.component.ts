@@ -6,24 +6,26 @@ import { Book } from './book';
 import { CartService } from '../services/cart.service';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-//import { PaymentPopupComponent } from 'src/app/demo/pages/payment-popup/payment-popup.component';
-import { SafeUrlPipe } from "../payment-popup/safe-url.pipe";
+import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
-// import { Pipe, PipeTransform } from '@angular/core';
-// import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+@Pipe({ name: 'safeUrl' })
+export class SafeUrlPipe implements PipeTransform {
+  public sanitizer = inject(DomSanitizer);
 
-// @Pipe({ name: 'safeUrl' })
-// export class SafeUrlPipe implements PipeTransform {
-//   constructor(private sanitizer: DomSanitizer) {}
-//   transform(url: string): SafeResourceUrl {
-//     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-//   }
-// }
+  constructor() {}
+  transform(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+}
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, SafeUrlPipe],
+
+  // SafeUrlPipe
+  imports: [FormsModule, CommonModule, RouterModule],
   providers: [BookService],
   templateUrl: './book-list.html',
   styleUrl: './book-list.scss'
@@ -40,6 +42,7 @@ export class BookListComponent implements OnInit {
   // payment iframe
   showPopup = false;
   iframeUrl = '';
+  paymentWindow;
 
   // valores de paginacion
   currentPage = 1;
@@ -49,6 +52,7 @@ export class BookListComponent implements OnInit {
   public bookService = inject(BookService);
   public cartService = inject(CartService);
   public router = inject(RouterModule);
+  private clienteHttp = inject(HttpClient);
 
   openPopup(url: string) {
     this.iframeUrl = url;
@@ -116,33 +120,51 @@ export class BookListComponent implements OnInit {
     console.log(JSON.stringify(payload));
     console.log('enviado');
 
-    //envio de datos para backend
-    //this.cartService.pay(payload);
-
     this.cartService.pay(payload).subscribe({
       next: (data) => {
         console.log('Respuesta del backend:', data);
 
         const payUrl = data['pay_url'];
+        const orderId = data['order_id'];
         console.log('URL de pago:', payUrl);
 
-        if (payUrl) {
-          //this.iframeUrl = ;
-          this.openPopup(payUrl); // cargamos AdamsPay en iframe
-          //this.showPopup = true; // mostramos el popup
-        }
-
         // if (payUrl) {
-        //   // Abre en una nueva pestaña
-        //   window.open(payUrl, '_blank');
+        //   this.openPopup(payUrl); // cargamos AdamsPay en iframe
         // }
 
-        // window.location.href = '/order-page';
+        if (payUrl) {
+          // Abre en una nueva pestaña
+          this.paymentWindow = window.open(payUrl, '_blank');
+        }
+
+        // Comenzar a "polling" del estado
+        this.pollPaymentStatus(orderId);
       },
       error: (err) => {
         console.error('Error al pagar:', err);
       }
     });
+  }
+
+  private pollPaymentStatus(orderId: number) {
+    const interval = setInterval(() => {
+      console.log("Consulto cada 3 segundos");
+      this.clienteHttp.get<{ pagado: boolean }>(`/order/${orderId}/check-status`).subscribe({
+        next: (data) => {
+          if (data.pagado) {
+            // Cierra la ventana de pago
+            this.paymentWindow?.close();
+            clearInterval(interval);
+
+            // Redirige a pantalla de éxito
+            window.location.href = '/success';
+          }
+        },
+        error: (err) => {
+          console.error('Error consultando el estado del pago', err);
+        }
+      });
+    }, 3000); // cada 3 segundos
   }
 
   addToCart(book: Book): void {
