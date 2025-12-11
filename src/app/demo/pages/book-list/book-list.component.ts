@@ -149,7 +149,7 @@ export class BookListComponent implements OnInit {
   private pollPaymentStatus(orderId: number) {
     const interval = setInterval(() => {
       console.log("Consulto cada 3 segundos");
-      this.clienteHttp.get<{ pagado: boolean }>(environment + '/order/'+orderId+'/check-status').subscribe({
+      this.clienteHttp.get<{ pagado: boolean }>(environment.apiUrl + '/order/'+orderId+'/check-status').subscribe({
         next: (data) => {
           if (data.pagado) {
             // Cierra la ventana de pago
