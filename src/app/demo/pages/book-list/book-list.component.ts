@@ -148,7 +148,10 @@ export class BookListComponent implements OnInit {
 
             // Redirige a pantalla de éxito
             window.location.href = '/success';
-          } 
+          } else {
+            // Redirige a pedido cancelado
+            window.location.href = '/404';
+          }
         },
         error: (err) => {
           console.error('Error consultando el estado del pago', err);
