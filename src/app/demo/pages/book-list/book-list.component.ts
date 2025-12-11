@@ -125,7 +125,7 @@ export class BookListComponent implements OnInit {
         console.log('Respuesta del backend:', data);
 
         const payUrl = data['pay_url'];
-        const orderId = data['order_id'];
+        const orderId = data['transaction_id'];
         console.log('URL de pago:', payUrl);
 
         // if (payUrl) {
