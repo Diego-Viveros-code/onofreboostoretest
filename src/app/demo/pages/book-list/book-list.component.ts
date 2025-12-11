@@ -151,13 +151,15 @@ export class BookListComponent implements OnInit {
       console.log("Consulto cada 3 segundos");
       this.clienteHttp.get<{ pagado: boolean }>(environment.apiUrl + 'order/'+orderId+'/check-status').subscribe({
         next: (data) => {
+          console.log("ESTADO ACTUAL");
+          console.log(data);
           if (data.pagado) {
             // Cierra la ventana de pago
             this.paymentWindow?.close();
             clearInterval(interval);
 
             // Redirige a pantalla de éxito
-            window.location.href = '/success';
+            window.location.href = '/order-page';
           }
         },
         error: (err) => {
