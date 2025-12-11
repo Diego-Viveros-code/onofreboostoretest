@@ -23,6 +23,10 @@ export class BookListComponent implements OnInit {
   cart: Book[] = [];
   userId: number = 1;
 
+  // payment iframe
+  showPopup = false;
+  iframeUrl = '';
+
   // valores de paginacion
   currentPage = 1;
   itemsPerPage = 6;
@@ -33,6 +37,7 @@ export class BookListComponent implements OnInit {
   public router = inject(RouterModule);
 
   ngOnInit() {
+    this.showPopup = false;
     this.getBooks();
   }
 
@@ -45,7 +50,7 @@ export class BookListComponent implements OnInit {
           author: book.author,
           category: book.category,
           price: book.price,
-          cover: environment.apiImages+'/'+book.cover
+          cover: environment.apiImages + '/' + book.cover
         }));
 
         this.booksFiltered = [...this.books];
@@ -100,16 +105,25 @@ export class BookListComponent implements OnInit {
         console.log('URL de pago:', payUrl);
 
         if (payUrl) {
-          // Abre en una nueva pestaña
-          window.open(payUrl, '_blank');
+          this.iframeUrl = payUrl; // cargamos AdamsPay en iframe
+          this.showPopup = true; // mostramos el popup
         }
 
-        window.location.href = '/order-page';
+        // if (payUrl) {
+        //   // Abre en una nueva pestaña
+        //   window.open(payUrl, '_blank');
+        // }
+
+        // window.location.href = '/order-page';
       },
       error: (err) => {
         console.error('Error al pagar:', err);
       }
     });
+  }
+
+  onPopupClosed() {
+    this.showPopup = false;
   }
 
   addToCart(book: Book): void {

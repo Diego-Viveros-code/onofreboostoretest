@@ -1,0 +1,12 @@
+<div class="overlay" *ngIf="visible">
+  <div class="modal">
+    <button class="close-btn" (click)="close()">✖</button>
+
+    <iframe 
+      [src]="url | safeUrl"
+      width="100%"
+      height="100%"
+      frameborder="0">
+    </iframe>
+  </div>
+</div>
