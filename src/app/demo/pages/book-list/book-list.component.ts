@@ -156,11 +156,8 @@ export class BookListComponent implements OnInit {
             this.paymentWindow?.close();
             clearInterval(interval);
             // Redirige a pantalla de éxito
-            window.location.href = '/order-page';
+            window.location.href = '/success';
           } 
-          // else {
-          //    window.location.href = '/404';
-          // }
         },
         error: (err) => {
           console.error('Error consultando el estado del pago', err);
