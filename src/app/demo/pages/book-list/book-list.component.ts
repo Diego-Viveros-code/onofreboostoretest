@@ -124,13 +124,11 @@ export class BookListComponent implements OnInit {
       next: (data) => {
         console.log('Respuesta del backend:', data);
 
-        const payUrl = data['pay_url'];
-        const orderId = data['order_id'];
-        console.log('URL de pago:', payUrl);
+        // descomentar lo comentado para que funcione el pooling
 
-        // if (payUrl) {
-        //   this.openPopup(payUrl); // cargamos AdamsPay en iframe
-        // }
+        const payUrl = data['pay_url'];
+        //const orderId = data['order_id'];
+        console.log('URL de pago:', payUrl);
 
         if (payUrl) {
           // Abre en una nueva pestaña
@@ -138,7 +136,7 @@ export class BookListComponent implements OnInit {
         }
 
         // Comenzar a "polling" del estado
-        this.pollPaymentStatus(orderId);
+        //this.pollPaymentStatus(orderId);
       },
       error: (err) => {
         console.error('Error al pagar:', err);
